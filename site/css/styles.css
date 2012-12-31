@@ -1,15 +1,17 @@
 ﻿body {
     font-family: "Bookman Old Style", "Times New Roman", serif;
-    background-color: #f4bab8;
+    background-color: #97B0D4;
+    font-size: 12pt;
 }
 
 .button {
-    padding: 5px;
+    padding: 5pt;
     border: 1px solid #cd0000;
     background-color: #ff0000;
-    margin: 5px;
-    border-radius: 5px;
+    margin: 5pt;
+    border-radius: 5pt;
     font-weight: bold;
+    font-size: 10pt;
 }
 
 .button:hover {
@@ -23,13 +25,15 @@
 
 #progressBar {
     width: 100%;
-    height: 50px;
+    height: 50pt;
 }
 
 .attribution {
     font-size: 8pt;
+    position: fixed;
+    bottom: 0;
+    margin: 10pt;
 }
-
 .attribution p {
-    margin: 0px;
+    margin: 0;
 }

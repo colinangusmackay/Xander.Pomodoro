@@ -60,6 +60,7 @@ $(function () {
         $("#stopTimer").removeAttr("disabled");
 
         $("#timeRemaining").html("Paused..");
+        setTitle("Paused");
     }
 
     function stopTimer() {
@@ -72,24 +73,38 @@ $(function () {
         $("#stopTimer").attr("disabled", "disabled");
 
         $("#timeRemaining").html("Stopped");
+        setTitle();
     }
 
     function updateClock() {
         clockProgress = currentTime() - clockStartTime;
         $("#progressBar").progressbar("value", clockProgress);
-        var remainingTime = Math.round((maxTime - clockProgress) / 1000);
-        if (remainingTime <= 90) {
-            remainingTime = Math.round(remainingTime / 5) * 5;
-            $("#timeRemaining").html("About " + remainingTime + " seconds");
-        } else {
-            remainingTime = Math.round(remainingTime / 60);
-            $("#timeRemaining").html("About " + remainingTime + " minutes");
-        }
-
+        var secondRemaining = Math.round((maxTime - clockProgress) / 1000);
+        setTimeRemainingSeconds(secondRemaining);
         if (clockProgress > maxTime) {
             document.getElementById("timesUpAudio").play();
             stopTimer();
             $("#timeRemaining").html("Finished");
+            setTitle("Finished");
         }
+    }
+    
+    function setTimeRemainingSeconds(secondsRemaining) {
+        if (secondsRemaining <= 90) {
+            secondsRemaining = Math.round(secondsRemaining / 5) * 5;
+            $("#timeRemaining").html("About " + secondsRemaining + " seconds");
+            setTitle("[~" + secondsRemaining + " secs]");
+        } else {
+            var minutesRemaining = Math.round(secondsRemaining / 60);
+            $("#timeRemaining").html("About " + minutesRemaining + " minutes");
+            setTitle("~" + minutesRemaining + " mins");
+        }
+    }
+
+    function setTitle(text) {
+        if ((text == undefined) || (text === ""))
+            document.title = "Xander Pomodoro";
+        else
+            document.title = "[" + text + "] : Xander Pomodoro";
     }
 });

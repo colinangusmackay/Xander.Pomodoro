@@ -1,7 +1,8 @@
 Xander.Pomodoro
 ===============
 
-A small web site that displays a pomodoro timer.
+A small web site that displays a pomodoro timer. 
+A working version of the site can be found at http://pomodoro.colinmackay.co.uk
 
 License
 =======

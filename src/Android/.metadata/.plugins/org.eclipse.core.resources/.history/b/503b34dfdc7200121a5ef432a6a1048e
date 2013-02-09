@@ -1,0 +1,9 @@
+package com.xanderframework.pomodoro;
+
+public class RunnableTimer extends Runnable {
+
+    public RunnableTimer() {
+        // TODO Auto-generated constructor stub
+    }
+
+}

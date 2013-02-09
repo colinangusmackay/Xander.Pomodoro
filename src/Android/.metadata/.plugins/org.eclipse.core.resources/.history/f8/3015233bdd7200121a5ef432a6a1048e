@@ -1,0 +1,26 @@
+package com.xanderframework.pomodoro;
+
+import android.os.SystemClock;
+import android.widget.ProgressBar;
+
+public class RunnableTimer implements Runnable {
+
+    public RunnableTimer(MainActivity parentActivity) {
+        this.parent = parentActivity;
+    }
+
+    private MainActivity parent;
+
+    @Override
+    public void run() {
+        parent.currentProgress = SystemClock.elapsedRealtime()
+                - parent.startTime;
+        parent.setProgressText(String.format("Time so far: %d",
+                parent.currentProgress));
+        parent.setProgressBarValue(parent.currentProgress);
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setProgress((int) currentProgress);
+
+        parent.timeHandler.postDelayed(updateTimeTask, 500);
+    }
+}

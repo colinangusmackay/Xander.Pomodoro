@@ -6,54 +6,71 @@ import android.os.SystemClock;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	private long startTime = 0;
-	private long currentProgress = 0;
-	private Handler timeHandler = new Handler();
+    public long startTime = 0;
+    public long currentProgress = 0;
+    public Handler timeHandler = new Handler();
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-	}
+    private void setButtonEnabled(int buttonId, boolean state) {
+        Button button = (Button) findViewById(buttonId);
+        button.setEnabled(state);
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
+    public void setProgressText(String text) {
+        TextView progressText = (TextView) findViewById(R.id.progressText);
+        progressText.setText(text);
+    }
 
-	public void clickStartTimer(View view) {
-		startTime = SystemClock.elapsedRealtime();
-		timeHandler.removeCallbacks(updateTimeTask);
-		timeHandler.postDelayed(updateTimeTask, 500);
-	}
+    public void setProgressBarValue(int progressValue)
+    {
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setProgress(progressValue);
+    }
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        setButtonEnabled(R.id.stopTimerButton, false);
+        setButtonEnabled(R.id.pauseTimerButton, false);
+    }
 
-	public void clickStopTimer(View view) {
-		timeHandler.removeCallbacks(updateTimeTask);
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
 
-	public void clickPauseTimer(View view) {
+    public void clickStartTimer(View view) {
+        startTime = SystemClock.elapsedRealtime() - currentProgress;
+        timeHandler.removeCallbacks(updateTimeTask);
+        timeHandler.postDelayed(updateTimeTask, 1);
+        setButtonEnabled(R.id.stopTimerButton, true);
+        setButtonEnabled(R.id.pauseTimerButton, true);
+        setButtonEnabled(R.id.startTimerButton, false);
+    }
 
-	}
+    public void clickStopTimer(View view) {
+        timeHandler.removeCallbacks(updateTimeTask);
+        currentProgress = 0;
+        setButtonEnabled(R.id.stopTimerButton, false);
+        setButtonEnabled(R.id.pauseTimerButton, false);
+        setButtonEnabled(R.id.startTimerButton, true);
+    }
 
-	private Runnable updateTimeTask = new Runnable() {
+    public void clickPauseTimer(View view) {
+        currentProgress = SystemClock.elapsedRealtime() - startTime;
+        timeHandler.removeCallbacks(updateTimeTask);
+        setButtonEnabled(R.id.stopTimerButton, true);
+        setButtonEnabled(R.id.pauseTimerButton, false);
+        setButtonEnabled(R.id.startTimerButton, true);
+    }
 
-		@Override
-		public void run() {
-			currentProgress = SystemClock.elapsedRealtime() - startTime;
-			TextView progressText = (TextView) findViewById(R.id.progressText);
-			progressText.setText(String.format("Time so far: %d",
-					currentProgress));
-			ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
-			progressBar.setProgress((int) currentProgress);
-
-			timeHandler.postDelayed(updateTimeTask, 500);
-		}
-	};
+    private Runnable updateTimeTask = new RunnableTimer(this);
 }

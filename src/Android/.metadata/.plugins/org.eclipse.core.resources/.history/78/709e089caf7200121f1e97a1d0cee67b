@@ -1,0 +1,10 @@
+?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Xander Pomodoro</string>
+    <string name="menu_settings">Settings</string>
+    <string name="button_startTimer">Start Timer</string>
+    <string name="button_stopTimer">StopTimer</string><string name="button_pauseTimer">Pause Timer</string>
+    
+
+</resources>

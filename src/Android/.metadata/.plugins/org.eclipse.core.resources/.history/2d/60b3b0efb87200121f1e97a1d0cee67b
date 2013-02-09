@@ -1,0 +1,43 @@
+package com.xanderframework.pomodoro;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.app.Activity;
+import android.view.Menu;
+import android.view.View;
+
+public class MainActivity extends Activity {
+
+	private long startTime = 0;
+	private long currentProgress = 0;
+	private Handler timeHandler = new Handler();
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+    
+    public void clickStartTimer(View view)
+    {
+    	startTime = SystemClock.elapsedRealtime();
+    	timeHandler.removeCallbacks(updateTimeTask);
+    	timeHandler.postDelayed(updateTimeTask, 500);
+    }
+    
+    private Runnable updateTimeTask = new Runnable(){
+
+		@Override
+		public void run() {
+			currentProgress = SystemClock.elapsedRealtime() - startTime;
+			
+		}};
+}
